@@ -189,7 +189,7 @@ SteamCommunity.prototype.startConfirmationChecker = function(pollInterval, ident
 
 var checkConfirmationMethod = function(conf, callback){
 	console.log('org method');
-	return callback(true);
+	return callback(null, true);
 };
 SteamCommunity.prototype.setConfirmationCheckMethod = function(method) {
 	console.log('setConfirmationCheckMethod');
