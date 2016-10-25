@@ -241,11 +241,16 @@ SteamCommunity.prototype.checkConfirmations = function() {
 						if(!err && val) {
 							self.emit('debug', "Accepting confirmation #" + conf.id);
 							var time = Math.floor(Date.now() / 1000);
-							conf.respond(time, SteamTotp.getConfirmationKey(self._identitySecret, time, "allow"), true, function () {
-								// If there was an error and it wasn't actually accepted, we'll pick it up again
-								delete self._knownConfirmations[conf.id];
-								setTimeout(callback, 1000); // Call the callback in 1 second, to make sure the time changes
-							});
+							try {
+								conf.respond(time, SteamTotp.getConfirmationKey(self._identitySecret, time, "allow"), true, function () {
+									// If there was an error and it wasn't actually accepted, we'll pick it up again
+									delete self._knownConfirmations[conf.id];
+									setTimeout(callback, 1000); // Call the callback in 1 second, to make sure the time changes
+								});
+							}catch (e){
+								console.log('Error occured while confirming offer');
+								console.log(e);
+							}
 						}
 					});
 				});
